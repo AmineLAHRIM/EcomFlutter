@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     private String cin;
     private String phoneNumber;
     private String address;
@@ -36,11 +36,11 @@ public class User implements Serializable {
     @OneToOne
     private WishList wishList;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

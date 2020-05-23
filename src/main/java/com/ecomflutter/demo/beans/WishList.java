@@ -25,7 +25,7 @@ public class WishList implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "wishList", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -33,11 +33,11 @@ public class WishList implements Serializable {
 
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

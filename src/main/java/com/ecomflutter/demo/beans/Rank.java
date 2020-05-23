@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class Rank implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private int numberStar1;
     private int numberStar2;
@@ -34,11 +34,11 @@ public class Rank implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

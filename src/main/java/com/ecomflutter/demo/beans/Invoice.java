@@ -25,7 +25,7 @@ public class Invoice implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private Date paymentDate;
     private double totalAmount;
@@ -33,11 +33,11 @@ public class Invoice implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

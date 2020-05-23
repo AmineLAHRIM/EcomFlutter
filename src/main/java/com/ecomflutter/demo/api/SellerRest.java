@@ -3,9 +3,7 @@ package com.ecomflutter.demo.api;
 import com.ecomflutter.demo.beans.Seller;
 import com.ecomflutter.demo.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,8 +14,24 @@ public class SellerRest {
     @Autowired
     private SellerService sellerService;
 
+
     @GetMapping("/")
-    private List<Seller> findAll() {
+    public List<Seller> findAll() {
         return this.sellerService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Seller findById(@PathVariable Long id) {
+        return this.sellerService.findById(id);
+    }
+
+    @PostMapping("/")
+    public int save(@RequestBody Seller seller) {
+        return this.sellerService.save(seller);
+    }
+
+    @DeleteMapping("/{id}")
+    public int deleteById(@PathVariable Long id) {
+        return this.sellerService.deleteById(id);
     }
 }

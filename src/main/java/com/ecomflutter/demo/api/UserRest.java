@@ -3,9 +3,7 @@ package com.ecomflutter.demo.api;
 import com.ecomflutter.demo.beans.User;
 import com.ecomflutter.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,10 +12,25 @@ import java.util.List;
 public class UserRest {
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
     @GetMapping("/")
-    private List<User> findAll() {
+    public List<User> findAll() {
         return this.userService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public User findById(@PathVariable Long id) {
+        return this.userService.findById(id);
+    }
+
+    @PostMapping("/")
+    public int save(@RequestBody User user) {
+        return this.userService.save(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public int deleteById(@PathVariable Long id) {
+        return this.userService.deleteById(id);
     }
 }

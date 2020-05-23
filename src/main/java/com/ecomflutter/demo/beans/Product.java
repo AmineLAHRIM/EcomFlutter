@@ -26,7 +26,7 @@ public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private String title;
     private String shortDescription;
@@ -35,7 +35,7 @@ public class Product implements Serializable {
     private double pricePromo;
     private double shippingPrice;
     private int quantityStock;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Unit unit;
     private String featuredImageUrl;
     @Column(columnDefinition = "boolean default false")
@@ -51,11 +51,11 @@ public class Product implements Serializable {
     private List<ProductWishListDetail> productWishListDetails;
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

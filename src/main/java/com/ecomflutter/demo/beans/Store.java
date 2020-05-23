@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class Store implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private String name;
     private String shortDescription;
@@ -35,11 +35,11 @@ public class Store implements Serializable {
     @ManyToOne
     private Seller seller;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
