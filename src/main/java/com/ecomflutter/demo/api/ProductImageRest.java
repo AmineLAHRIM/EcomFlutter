@@ -12,25 +12,25 @@ import java.util.List;
 public class ProductImageRest {
 
     @Autowired
-    private ProductImageService ProductImageImageService;
+    private ProductImageService productImageService;
 
     @GetMapping("/")
     public List<ProductImage> findAll() {
-        return this.ProductImageImageService.findAll();
+        return this.productImageService.findAll();
     }
 
     @GetMapping("/{id}")
     public ProductImage findById(@PathVariable Long id) {
-        return this.ProductImageImageService.findById(id);
+        return this.productImageService.findById(id);
     }
 
     @PostMapping("/")
     public int save(@RequestBody ProductImage productImage) {
-        return this.ProductImageImageService.save(productImage);
+        return this.productImageService.save(productImage);
     }
 
     @DeleteMapping("/{id}")
     public int deleteById(@PathVariable Long id) {
-        return this.ProductImageImageService.deleteById(id);
+        return this.productImageService.deleteById(id);
     }
 }
