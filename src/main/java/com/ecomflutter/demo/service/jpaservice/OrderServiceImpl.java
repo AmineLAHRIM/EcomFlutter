@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private OrderDao OrderDao;
+    private OrderDao orderDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Order> Orders = this.OrderDao.findAll();
+        List<Order> Orders = this.orderDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Orders;
@@ -33,19 +33,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(Long id) {
-        return this.OrderDao.findById(id).get();
+        return this.orderDao.findById(id).get();
     }
 
     @Override
     public int save(Order Order) {
-        this.OrderDao.save(Order);
+        this.orderDao.save(Order);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.OrderDao.deleteById(id);
+        this.orderDao.deleteById(id);
         return 1;
 
     }

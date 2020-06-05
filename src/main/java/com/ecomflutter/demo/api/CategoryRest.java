@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("ecomflutter/category")
 public class CategoryRest {
 
@@ -17,6 +18,17 @@ public class CategoryRest {
     @GetMapping("/")
     public List<Category> findAll() {
         return this.categoryService.findAll();
+    }
+
+    /*@GetMapping("/bysupercategory/{id}")
+    public List<Category> findAllBySuperCategory(@PathVariable Long id) {
+        System.out.println("findAllBySuperCategory id="+id);
+        return this.categoryService.findAllBySuperCategory(id);
+    }*/
+    @GetMapping("/bysupercategoryid/{id}")
+    public List<Category> findBySuperCategoryId(@PathVariable Long id) {
+        System.out.println("findAllBySuperCategory id="+id);
+        return this.categoryService.findBySuperCategoryId(id);
     }
 
     @GetMapping("/{id}")

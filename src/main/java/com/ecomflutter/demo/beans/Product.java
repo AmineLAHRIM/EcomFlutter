@@ -45,6 +45,9 @@ public class Product implements Serializable {
     private Rank rank;
     @ManyToOne
     private Category category;
+    @ManyToOne
+    private Store store;
+
 
     @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -162,4 +165,14 @@ public class Product implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+
 }

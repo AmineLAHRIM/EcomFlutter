@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductImageServiceImpl implements ProductImageService {
 
     @Autowired
-    private ProductImageDao ProductImageDao;
+    private ProductImageDao productImageDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<ProductImage> ProductImages = this.ProductImageDao.findAll();
+        List<ProductImage> ProductImages = this.productImageDao.findAll();
         session.disableFilter("deletedFilter");
 
         return ProductImages;
@@ -33,19 +33,19 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     public ProductImage findById(Long id) {
-        return this.ProductImageDao.findById(id).get();
+        return this.productImageDao.findById(id).get();
     }
 
     @Override
     public int save(ProductImage ProductImage) {
-        this.ProductImageDao.save(ProductImage);
+        this.productImageDao.save(ProductImage);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.ProductImageDao.deleteById(id);
+        this.productImageDao.deleteById(id);
         return 1;
 
     }

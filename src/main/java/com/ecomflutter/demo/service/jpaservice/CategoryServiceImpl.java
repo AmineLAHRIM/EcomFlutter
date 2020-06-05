@@ -2,6 +2,7 @@ package com.ecomflutter.demo.service.jpaservice;
 
 import com.ecomflutter.demo.beans.Category;
 import com.ecomflutter.demo.dao.CategoryDao;
+import com.ecomflutter.demo.dao.SuperCategoryDao;
 import com.ecomflutter.demo.service.CategoryService;
 import org.hibernate.Filter;
 import org.hibernate.Session;
@@ -16,6 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryDao categoryDao;
+    @Autowired
+    private SuperCategoryDao superCategoryDao;
+
 
     @Autowired
     private EntityManager entityManager;
@@ -30,6 +34,23 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categories;
     }
+
+    @Override
+    public List<Category> findBySuperCategoryId(Long id) {
+        return this.categoryDao.findBySuperCategoryId(id);
+    }
+
+    /*@Override
+    public List<Category> findAllBySuperCategory(Long id) {
+        SuperCategory superCategory = this.superCategoryDao.findById(id).get();
+        List<Category> categories = null;
+
+        if (superCategory != null) {
+            categories = this.categoryDao.findAllBySuperCategory(superCategory);
+        }
+
+        return categories;
+    }*/
 
     @Override
     public Category findById(Long id) {

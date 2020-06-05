@@ -15,7 +15,7 @@ import java.util.List;
 public class SellerServiceImpl implements SellerService {
 
     @Autowired
-    private SellerDao SellerDao;
+    private SellerDao sellerDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class SellerServiceImpl implements SellerService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Seller> Sellers = this.SellerDao.findAll();
+        List<Seller> Sellers = this.sellerDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Sellers;
@@ -33,19 +33,19 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller findById(Long id) {
-        return this.SellerDao.findById(id).get();
+        return this.sellerDao.findById(id).get();
     }
 
     @Override
     public int save(Seller Seller) {
-        this.SellerDao.save(Seller);
+        this.sellerDao.save(Seller);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.SellerDao.deleteById(id);
+        this.sellerDao.deleteById(id);
         return 1;
 
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class StoreServiceImpl implements StoreService {
 
     @Autowired
-    private StoreDao StoreDao;
+    private StoreDao storeDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class StoreServiceImpl implements StoreService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Store> Stores = this.StoreDao.findAll();
+        List<Store> Stores = this.storeDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Stores;
@@ -33,19 +33,19 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store findById(Long id) {
-        return this.StoreDao.findById(id).get();
+        return this.storeDao.findById(id).get();
     }
 
     @Override
     public int save(Store Store) {
-        this.StoreDao.save(Store);
+        this.storeDao.save(Store);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.StoreDao.deleteById(id);
+        this.storeDao.deleteById(id);
         return 1;
 
     }

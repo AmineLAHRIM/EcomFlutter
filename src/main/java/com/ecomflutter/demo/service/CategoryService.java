@@ -8,6 +8,10 @@ public interface CategoryService {
 
     public List<Category> findAll();
 
+    public List<Category> findBySuperCategoryId(Long id);
+    /* public List<Category> findAllBySuperCategory(Long id);*/
+
+
     public Category findById(Long id);
 
     public int save(Category category);

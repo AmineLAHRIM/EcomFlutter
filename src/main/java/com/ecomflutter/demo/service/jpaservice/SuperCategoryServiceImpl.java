@@ -15,7 +15,7 @@ import java.util.List;
 public class SuperCategoryServiceImpl implements SuperCategoryService {
 
     @Autowired
-    private SuperCategoryDao SuperCategoryDao;
+    private SuperCategoryDao superCategoryDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class SuperCategoryServiceImpl implements SuperCategoryService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<SuperCategory> SuperCategorys = this.SuperCategoryDao.findAll();
+        List<SuperCategory> SuperCategorys = this.superCategoryDao.findAll();
         session.disableFilter("deletedFilter");
 
         return SuperCategorys;
@@ -33,19 +33,19 @@ public class SuperCategoryServiceImpl implements SuperCategoryService {
 
     @Override
     public SuperCategory findById(Long id) {
-        return this.SuperCategoryDao.findById(id).get();
+        return this.superCategoryDao.findById(id).get();
     }
 
     @Override
     public int save(SuperCategory SuperCategory) {
-        this.SuperCategoryDao.save(SuperCategory);
+        this.superCategoryDao.save(SuperCategory);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.SuperCategoryDao.deleteById(id);
+        this.superCategoryDao.deleteById(id);
         return 1;
 
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class RankServiceImpl implements RankService {
 
     @Autowired
-    private RankDao RankDao;
+    private RankDao rankDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class RankServiceImpl implements RankService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Rank> Ranks = this.RankDao.findAll();
+        List<Rank> Ranks = this.rankDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Ranks;
@@ -33,19 +33,19 @@ public class RankServiceImpl implements RankService {
 
     @Override
     public Rank findById(Long id) {
-        return this.RankDao.findById(id).get();
+        return this.rankDao.findById(id).get();
     }
 
     @Override
     public int save(Rank Rank) {
-        this.RankDao.save(Rank);
+        this.rankDao.save(Rank);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.RankDao.deleteById(id);
+        this.rankDao.deleteById(id);
         return 1;
 
     }

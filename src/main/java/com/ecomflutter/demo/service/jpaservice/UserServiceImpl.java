@@ -15,7 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDao UserDao;
+    private UserDao userDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<User> Users = this.UserDao.findAll();
+        List<User> Users = this.userDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Users;
@@ -33,19 +33,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        return this.UserDao.findById(id).get();
+        return this.userDao.findById(id).get();
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return this.userDao.findByUsername(username);
     }
 
     @Override
     public int save(User User) {
-        this.UserDao.save(User);
+        this.userDao.save(User);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.UserDao.deleteById(id);
+        this.userDao.deleteById(id);
         return 1;
 
     }

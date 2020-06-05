@@ -15,7 +15,7 @@ import java.util.List;
 public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
-    private InvoiceDao InvoiceDao;
+    private InvoiceDao invoiceDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Invoice> invoices = this.InvoiceDao.findAll();
+        List<Invoice> invoices = this.invoiceDao.findAll();
         session.disableFilter("deletedFilter");
 
         return invoices;
@@ -33,19 +33,19 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Invoice findById(Long id) {
-        return this.InvoiceDao.findById(id).get();
+        return this.invoiceDao.findById(id).get();
     }
 
     @Override
     public int save(Invoice Invoice) {
-        this.InvoiceDao.save(Invoice);
+        this.invoiceDao.save(Invoice);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.InvoiceDao.deleteById(id);
+        this.invoiceDao.deleteById(id);
         return 1;
 
     }

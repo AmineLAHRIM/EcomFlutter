@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductDao ProductDao;
+    private ProductDao productDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Product> Products = this.ProductDao.findAll();
+        List<Product> Products = this.productDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Products;
@@ -33,19 +33,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return this.ProductDao.findById(id).get();
+        return this.productDao.findById(id).get();
     }
 
     @Override
     public int save(Product Product) {
-        this.ProductDao.save(Product);
+        this.productDao.save(Product);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.ProductDao.deleteById(id);
+        this.productDao.deleteById(id);
         return 1;
 
     }

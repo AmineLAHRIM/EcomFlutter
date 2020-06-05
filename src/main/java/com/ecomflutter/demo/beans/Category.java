@@ -30,7 +30,6 @@ public class Category implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-
     @ManyToOne
     private SuperCategory superCategory;
 

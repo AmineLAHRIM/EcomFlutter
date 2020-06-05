@@ -15,7 +15,7 @@ import java.util.List;
 public class WishListServiceImpl implements WishListService {
 
     @Autowired
-    private WishListDao WishListDao;
+    private WishListDao wishListDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class WishListServiceImpl implements WishListService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<WishList> WishLists = this.WishListDao.findAll();
+        List<WishList> WishLists = this.wishListDao.findAll();
         session.disableFilter("deletedFilter");
 
         return WishLists;
@@ -33,19 +33,19 @@ public class WishListServiceImpl implements WishListService {
 
     @Override
     public WishList findById(Long id) {
-        return this.WishListDao.findById(id).get();
+        return this.wishListDao.findById(id).get();
     }
 
     @Override
     public int save(WishList WishList) {
-        this.WishListDao.save(WishList);
+        this.wishListDao.save(WishList);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.WishListDao.deleteById(id);
+        this.wishListDao.deleteById(id);
         return 1;
 
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class LogServiceImpl implements LogService {
 
     @Autowired
-    private LogDao LogDao;
+    private LogDao logDao;
 
     @Autowired
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class LogServiceImpl implements LogService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Log> Logs = this.LogDao.findAll();
+        List<Log> Logs = this.logDao.findAll();
         session.disableFilter("deletedFilter");
 
         return Logs;
@@ -33,19 +33,19 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public Log findById(Long id) {
-        return this.LogDao.findById(id).get();
+        return this.logDao.findById(id).get();
     }
 
     @Override
     public int save(Log Log) {
-        this.LogDao.save(Log);
+        this.logDao.save(Log);
         return 1;
     }
 
     @Override
     public int deleteById(Long id) {
 
-        this.LogDao.deleteById(id);
+        this.logDao.deleteById(id);
         return 1;
 
     }

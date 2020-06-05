@@ -27,6 +27,7 @@ public class User implements Serializable {
     private String cin;
     private String phoneNumber;
     private String address;
+    private String username;
     private String email;
     private String password;
     private String profilImageUrl;
@@ -106,5 +107,13 @@ public class User implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
