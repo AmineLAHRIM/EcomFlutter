@@ -37,14 +37,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmailAndPassword(String email, String password) {
+        return this.userDao.findByEmailAndPassword(email, password);
+    }
+
+    @Override
     public User findByUsername(String username) {
         return this.userDao.findByUsername(username);
     }
 
     @Override
-    public int save(User User) {
-        this.userDao.save(User);
-        return 1;
+    public User findByEmail(String email) {
+        return this.userDao.findByEmail(email);
+    }
+
+    @Override
+    public int save(User user) {
+        if (this.findByUsername(user.getUsername()) != null) {
+
+            return -1;
+        } else if (userDao.findByEmail(user.getEmail()) != null) {
+            return -2;
+        } else {
+            this.userDao.save(user);
+            return 1;
+        }
     }
 
     @Override

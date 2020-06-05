@@ -27,6 +27,7 @@ public class User implements Serializable {
     private String cin;
     private String phoneNumber;
     private String address;
+    private String token;
     private String username;
     private String email;
     private String password;
@@ -115,5 +116,13 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

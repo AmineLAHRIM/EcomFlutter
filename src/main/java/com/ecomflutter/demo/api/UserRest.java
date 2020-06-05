@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("ecomflutter/user")
@@ -28,6 +29,11 @@ public class UserRest {
     @GetMapping("/username/{username}")
     public User findById(@PathVariable String username) {
         return this.userService.findByUsername(username);
+    }
+
+    @GetMapping("/login")
+    public User findByEmailAndPassword(@RequestParam String email, @RequestParam String password) {
+        return this.userService.findByEmailAndPassword(email, password);
     }
 
     @PostMapping("/")
