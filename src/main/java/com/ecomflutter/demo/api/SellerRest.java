@@ -26,6 +26,8 @@ public class SellerRest {
         return this.sellerService.findById(id);
     }
 
+
+
     @PostMapping("/")
     public int save(@RequestBody Seller seller) {
         return this.sellerService.save(seller);

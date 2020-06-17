@@ -49,9 +49,14 @@ public class Product implements Serializable {
     private Store store;
 
 
-    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductWishListDetail> productWishListDetails;
+
+    @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<ProductImage> productImages;
+
 
 
     public Long getId() {
@@ -173,6 +178,12 @@ public class Product implements Serializable {
     public void setStore(Store store) {
         this.store = store;
     }
+
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+
 
 
 }

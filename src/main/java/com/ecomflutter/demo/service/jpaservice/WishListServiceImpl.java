@@ -37,9 +37,8 @@ public class WishListServiceImpl implements WishListService {
     }
 
     @Override
-    public int save(WishList WishList) {
-        this.wishListDao.save(WishList);
-        return 1;
+    public WishList save(WishList WishList) {
+        return this.wishListDao.save(WishList);
     }
 
     @Override

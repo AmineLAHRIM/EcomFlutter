@@ -1,8 +1,10 @@
 package com.ecomflutter.demo.service.jpaservice;
 
+import com.ecomflutter.demo.beans.Product;
 import com.ecomflutter.demo.beans.ProductImage;
 import com.ecomflutter.demo.dao.ProductImageDao;
 import com.ecomflutter.demo.service.ProductImageService;
+import com.ecomflutter.demo.service.ProductService;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Autowired
     private ProductImageDao productImageDao;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private EntityManager entityManager;
@@ -37,8 +42,11 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
-    public int save(ProductImage ProductImage) {
-        this.productImageDao.save(ProductImage);
+    public int save(Product product, List<ProductImage> productImages) {
+        productImages.forEach(productImage -> {
+            productImage.setProduct(product);
+            this.productImageDao.save(productImage);
+        });
         return 1;
     }
 
@@ -48,5 +56,24 @@ public class ProductImageServiceImpl implements ProductImageService {
         this.productImageDao.deleteById(id);
         return 1;
 
+    }
+
+    @Override
+    public List<ProductImage> findAllByProductId(Long productId) {
+        return this.productImageDao.findAllByProductId(productId);
+    }
+
+    @Override
+    public int saveAll(List<ProductImage> productImages, Long productId) {
+        Product foundedProduct = this.productService.findById(productId);
+        if (foundedProduct != null) {
+            productImages.forEach(productImage -> {
+                productImage.setProduct(foundedProduct);
+                this.productImageDao.save(productImage);
+            });
+            return 0;
+        }
+
+        return -1;
     }
 }

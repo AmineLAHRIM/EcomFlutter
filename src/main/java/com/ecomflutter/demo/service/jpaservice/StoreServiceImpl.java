@@ -1,5 +1,6 @@
 package com.ecomflutter.demo.service.jpaservice;
 
+import com.ecomflutter.demo.beans.Seller;
 import com.ecomflutter.demo.beans.Store;
 import com.ecomflutter.demo.dao.StoreDao;
 import com.ecomflutter.demo.service.StoreService;
@@ -34,6 +35,11 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Store findById(Long id) {
         return this.storeDao.findById(id).get();
+    }
+
+    @Override
+    public Store findBySellerId(Long sellerId) {
+        return this.storeDao.findBySellerId(sellerId);
     }
 
     @Override

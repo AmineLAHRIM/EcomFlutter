@@ -27,11 +27,16 @@ public class ProductRest {
 
     @PostMapping("/")
     public int save(@RequestBody Product product) {
-        return this.productService.save(product);
+        return this.productService.save(product, product.getProductImages());
     }
 
     @DeleteMapping("/{id}")
     public int deleteById(@PathVariable Long id) {
         return this.productService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public int update(@PathVariable Long id, @RequestBody Product product) {
+        return this.productService.update(id, product);
     }
 }

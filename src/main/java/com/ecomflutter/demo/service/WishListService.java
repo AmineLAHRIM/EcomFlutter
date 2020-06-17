@@ -10,7 +10,7 @@ public interface WishListService {
 
     public WishList findById(Long id);
 
-    public int save(WishList WishList);
+    public WishList save(WishList WishList);
 
     public int deleteById(Long id);
 }

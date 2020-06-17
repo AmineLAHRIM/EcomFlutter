@@ -20,15 +20,25 @@ public class ProductImageRest {
         return this.productImageService.findAll();
     }
 
+    @GetMapping("/productId/{productId}")
+    public List<ProductImage> findAllByProductId(@PathVariable Long productId) {
+        return this.productImageService.findAllByProductId(productId);
+    }
+
     @GetMapping("/{id}")
     public ProductImage findById(@PathVariable Long id) {
         return this.productImageService.findById(id);
     }
 
-    @PostMapping("/")
+    /*@PostMapping("/")
     public int save(@RequestBody ProductImage productImage) {
         return this.productImageService.save(productImage);
-    }
+    }*/
+
+    /*@PostMapping("/productId/{productId}")
+    public int saveAll(@RequestBody List<ProductImage> productImages, @PathVariable Long productId) {
+        return this.productImageService.saveAll(productImages, productId);
+    }*/
 
     @DeleteMapping("/{id}")
     public int deleteById(@PathVariable Long id) {

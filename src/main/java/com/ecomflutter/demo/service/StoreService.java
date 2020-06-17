@@ -10,7 +10,9 @@ public interface StoreService {
 
     public Store findById(Long id);
 
-    public int save(Store Store);
+    public Store findBySellerId(Long sellerId);
+
+    public int save(Store store);
 
     public int deleteById(Long id);
 }

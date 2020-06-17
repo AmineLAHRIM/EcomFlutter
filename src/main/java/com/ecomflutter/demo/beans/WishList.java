@@ -32,6 +32,8 @@ public class WishList implements Serializable {
     private List<ProductWishListDetail> productWishListDetailList;
 
 
+    public WishList() {
+    }
 
     public Long getId() {
         return id;

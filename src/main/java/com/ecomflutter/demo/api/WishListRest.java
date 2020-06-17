@@ -26,7 +26,7 @@ public class WishListRest {
     }
 
     @PostMapping("/")
-    public int save(@RequestBody WishList wishList) {
+    public WishList save(@RequestBody WishList wishList) {
         return this.wishListService.save(wishList);
     }
 

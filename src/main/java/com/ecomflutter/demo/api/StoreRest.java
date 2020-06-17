@@ -25,6 +25,11 @@ public class StoreRest {
         return this.storeService.findById(id);
     }
 
+    @GetMapping("/seller/{sellerId}")
+    public Store findBySellerId(@PathVariable Long sellerId) {
+        return this.storeService.findBySellerId(sellerId);
+    }
+
     @PostMapping("/")
     public int save(@RequestBody Store store) {
         return this.storeService.save(store);

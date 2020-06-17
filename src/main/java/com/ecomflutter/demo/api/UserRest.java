@@ -1,8 +1,10 @@
 package com.ecomflutter.demo.api;
 
 import com.ecomflutter.demo.beans.User;
+import com.ecomflutter.demo.beans.WishList;
 import com.ecomflutter.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,12 +34,13 @@ public class UserRest {
     }
 
     @GetMapping("/login")
-    public User findByEmailAndPassword(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> findByEmailAndPassword(@RequestParam String email, @RequestParam String password) {
         return this.userService.findByEmailAndPassword(email, password);
     }
 
     @PostMapping("/")
-    public int save(@RequestBody User user) {
+    public ResponseEntity<?> save(@RequestBody User user) {
+        WishList wishList= user.getWishList();
         return this.userService.save(user);
     }
 
