@@ -2,8 +2,10 @@ package com.ecomflutter.demo.service.jpaservice;
 
 import com.ecomflutter.demo.beans.Category;
 import com.ecomflutter.demo.dao.CategoryDao;
+import com.ecomflutter.demo.dao.ProductDao;
 import com.ecomflutter.demo.dao.SuperCategoryDao;
 import com.ecomflutter.demo.service.CategoryService;
+import com.ecomflutter.demo.service.ProductCategoryDetailService;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDao categoryDao;
     @Autowired
     private SuperCategoryDao superCategoryDao;
+    @Autowired
+    private ProductCategoryDetailService productCategoryDetailService;
+    @Autowired
+    private ProductDao productDao;
 
 
     @Autowired
@@ -54,7 +60,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-        return this.categoryDao.findById(id).get();
+        Category currentCategory = this.categoryDao.findById(id).get();
+        if (currentCategory != null) {
+            currentCategory.setProducts(this.productCategoryDetailService.findAllByCategory_Id(currentCategory.getId()));
+        }
+        return currentCategory;
     }
 
     @Override
@@ -70,4 +80,5 @@ public class CategoryServiceImpl implements CategoryService {
         return 1;
 
     }
+
 }

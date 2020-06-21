@@ -31,6 +31,8 @@ public class WishList implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductWishListDetail> productWishListDetailList;
 
+    @Transient
+    private List<Product> products;
 
     public WishList() {
     }
@@ -49,5 +51,13 @@ public class WishList implements Serializable {
 
     public void setProductWishListDetailList(List<ProductWishListDetail> productWishListDetailList) {
         this.productWishListDetailList = productWishListDetailList;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

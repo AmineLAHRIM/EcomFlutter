@@ -27,7 +27,6 @@ public class LogServiceImpl implements LogService {
         filter.setParameter("isDeleted", false);
         List<Log> Logs = this.logDao.findAll();
         session.disableFilter("deletedFilter");
-
         return Logs;
     }
 

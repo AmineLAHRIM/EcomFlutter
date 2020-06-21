@@ -1,5 +1,6 @@
 package com.ecomflutter.demo.beans;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @SQLDelete(sql = "UPDATE category SET deleted=true WHERE id=?")
 
@@ -32,6 +34,13 @@ public class Category implements Serializable {
 
     @ManyToOne
     private SuperCategory superCategory;
+
+    @Transient
+    private List<Product> products;
+
+    @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<ProductCategoryDetail> productCategoryDetails;
 
     public Long getId() {
         return id;
@@ -63,5 +72,29 @@ public class Category implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    /*public List<ProductCategoryDetail> getProductCategoryDetails() {
+        return productCategoryDetails;
+    }
+
+    public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
+        this.productCategoryDetails = productCategoryDetails;
+    }*/
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<ProductCategoryDetail> getProductCategoryDetails() {
+        return productCategoryDetails;
+    }
+
+    public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
+        this.productCategoryDetails = productCategoryDetails;
     }
 }

@@ -11,4 +11,5 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
     /*List<Category> findAllBySuperCategory(SuperCategory superCategory);*/
 
     List<Category> findBySuperCategoryId(Long id);
+
 }

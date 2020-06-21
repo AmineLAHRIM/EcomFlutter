@@ -3,10 +3,11 @@ package com.ecomflutter.demo.service.jpaservice;
 import com.ecomflutter.demo.beans.Product;
 import com.ecomflutter.demo.beans.ProductImage;
 import com.ecomflutter.demo.dao.ProductDao;
+import com.ecomflutter.demo.service.ProductCategoryDetailService;
 import com.ecomflutter.demo.service.ProductImageService;
 import com.ecomflutter.demo.service.ProductService;
 import com.ecomflutter.demo.service.util.NullPropertyNames;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ecomflutter.demo.service.util.Response;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.BeanUtils;
@@ -15,20 +16,23 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+
+    @Autowired
+    private ProductCategoryDetailService productCategoryDetailService;
+
     @Autowired
     private ProductImageService productImageService;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private EntityManager entityManager;
+
 
     @Override
     public List<Product> findAll() {
@@ -43,16 +47,32 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return this.productDao.findById(id).get();
+        Response response = new Response();
+
+        Product currentProduct = null;
+        Optional<Product> byId = this.productDao.findById(id);
+        if (byId.isPresent()) {
+            currentProduct = byId.get();
+            if (currentProduct != null) {
+                currentProduct.setCategories(this.productCategoryDetailService.findAllByProduct_Id(currentProduct.getId()));
+            }
+            response.setOutput(currentProduct);
+        }
+        return currentProduct;
+
     }
 
     @Override
-    public int save(Product product, List<ProductImage> productImages) {
-        this.productDao.save(product);
+    public Product save(Product product, List<ProductImage> productImages) {
 
-        this.productImageService.save(product, productImages);
+        Product currentProduct = this.productDao.save(product);
+        if (currentProduct != null) {
+            if (productImages != null) {
+                this.productImageService.save(product, productImages);
+            }
+        }
+        return currentProduct;
 
-        return 1;
     }
 
     @Override
@@ -64,17 +84,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int update(Long id, Product product) {
+    public Product update(Long id, Product product) {
+
+
         Product foundedProduct = findById(id);
+
         if (foundedProduct != null) {
             BeanUtils.copyProperties(product, foundedProduct, NullPropertyNames.getNullPropertyNames(product));
             List<ProductImage> productImages = product.getProductImages();
-            this.productImageService.save(foundedProduct, productImages);
-
-            return 0;
+            if (productImages != null && !productImages.isEmpty()) {
+                this.productImageService.save(foundedProduct, productImages);
+            }
         }
-        return -1;
-
-
+        return foundedProduct;
     }
 }

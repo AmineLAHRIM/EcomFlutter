@@ -43,20 +43,29 @@ public class Product implements Serializable {
 
     @OneToOne
     private Rank rank;
-    @ManyToOne
-    private Category category;
+
     @ManyToOne
     private Store store;
 
+/*    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Category> category;*/
 
-    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Transient
+    private List<Category> categories;
+
+
+    @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<ProductCategoryDetail> productCategoryDetails;
+
+
+    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductWishListDetail> productWishListDetails;
 
-    @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductImage> productImages;
-
 
 
     public Long getId() {
@@ -147,13 +156,13 @@ public class Product implements Serializable {
         this.rank = rank;
     }
 
-    public Category getCategory() {
-        return category;
+   /* public List<ProductCategoryDetail> getProductCategoryDetails() {
+        return productCategoryDetails;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+    public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
+        this.productCategoryDetails = productCategoryDetails;
+    }*/
 
     public List<ProductWishListDetail> getProductWishListDetails() {
         return productWishListDetails;
@@ -183,7 +192,19 @@ public class Product implements Serializable {
         return productImages;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
 
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
 
+    public List<ProductCategoryDetail> getProductCategoryDetails() {
+        return productCategoryDetails;
+    }
 
+    public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
+        this.productCategoryDetails = productCategoryDetails;
+    }
 }

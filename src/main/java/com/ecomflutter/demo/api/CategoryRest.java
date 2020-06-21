@@ -25,9 +25,12 @@ public class CategoryRest {
         System.out.println("findAllBySuperCategory id="+id);
         return this.categoryService.findAllBySuperCategory(id);
     }*/
+
+
+
     @GetMapping("/bysupercategoryid/{id}")
     public List<Category> findBySuperCategoryId(@PathVariable Long id) {
-        System.out.println("findAllBySuperCategory id="+id);
+        System.out.println("findAllBySuperCategory id=" + id);
         return this.categoryService.findBySuperCategoryId(id);
     }
 

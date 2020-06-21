@@ -11,9 +11,9 @@ public interface ProductService {
 
     public Product findById(Long id);
 
-    public int save(Product product, List<ProductImage> productImages);
+    public Product save(Product product, List<ProductImage> productImages);
 
     public int deleteById(Long id);
 
-    public int update(Long id, Product product);
+    public Product update(Long id, Product product);
 }
