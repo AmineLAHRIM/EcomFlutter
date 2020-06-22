@@ -3,6 +3,7 @@ package com.ecomflutter.demo.api;
 import com.ecomflutter.demo.beans.Product;
 import com.ecomflutter.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +22,13 @@ public class ProductRest {
     }
 
     @GetMapping("/{id}")
-    public Product findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         return this.productService.findById(id);
     }
 
     @PostMapping("/")
-    public Product save(@RequestBody Product product) {
-        return this.productService.save(product, product.getProductImages());
+    public ResponseEntity<?> save(@RequestBody Product product) {
+        return this.productService.save(product, product.getProductImages(),product.getProductCategoryDetails());
     }
 
     @DeleteMapping("/{id}")
@@ -36,7 +37,7 @@ public class ProductRest {
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return this.productService.update(id, product);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
+        return this.productService.update(id, product,product.getProductImages(),product.getProductCategoryDetails());
     }
 }

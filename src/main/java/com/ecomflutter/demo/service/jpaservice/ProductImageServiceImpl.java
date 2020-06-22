@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,12 +43,13 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
-    public int save(Product product, List<ProductImage> productImages) {
+    public List<ProductImage> save(Product product, List<ProductImage> productImages) {
+        List<ProductImage> savedProductImages = new ArrayList<>();
         productImages.forEach(productImage -> {
             productImage.setProduct(product);
-            this.productImageDao.save(productImage);
+            savedProductImages.add(this.productImageDao.save(productImage));
         });
-        return 1;
+        return savedProductImages;
     }
 
     @Override
@@ -61,19 +63,5 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     public List<ProductImage> findAllByProductId(Long productId) {
         return this.productImageDao.findAllByProductId(productId);
-    }
-
-    @Override
-    public int saveAll(List<ProductImage> productImages, Long productId) {
-        Product foundedProduct = this.productService.findById(productId);
-        if (foundedProduct != null) {
-            productImages.forEach(productImage -> {
-                productImage.setProduct(foundedProduct);
-                this.productImageDao.save(productImage);
-            });
-            return 0;
-        }
-
-        return -1;
     }
 }

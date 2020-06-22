@@ -11,11 +11,10 @@ public interface ProductImageService {
 
     public ProductImage findById(Long id);
 
-    public int save(Product product, List<ProductImage> productImages);
+    public List<ProductImage> save(Product product, List<ProductImage> productImages);
 
     public int deleteById(Long id);
 
     public List<ProductImage> findAllByProductId(Long productId);
 
-    public int saveAll(List<ProductImage> productImages, Long productId);
 }

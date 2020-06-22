@@ -54,6 +54,7 @@ public class Product implements Serializable {
     private List<Category> categories;
 
 
+
     @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductCategoryDetail> productCategoryDetails;
@@ -168,9 +169,6 @@ public class Product implements Serializable {
         return productWishListDetails;
     }
 
-    public void setProductWishListDetails(List<ProductWishListDetail> productWishListDetails) {
-        this.productWishListDetails = productWishListDetails;
-    }
 
     public boolean isDeleted() {
         return deleted;
@@ -192,6 +190,8 @@ public class Product implements Serializable {
         return productImages;
     }
 
+
+
     public List<Category> getCategories() {
         return categories;
     }
@@ -204,7 +204,10 @@ public class Product implements Serializable {
         return productCategoryDetails;
     }
 
-    public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
-        this.productCategoryDetails = productCategoryDetails;
-    }
+
+
+
+
+
+
 }

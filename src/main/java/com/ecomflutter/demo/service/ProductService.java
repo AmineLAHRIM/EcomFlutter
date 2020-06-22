@@ -1,7 +1,9 @@
 package com.ecomflutter.demo.service;
 
 import com.ecomflutter.demo.beans.Product;
+import com.ecomflutter.demo.beans.ProductCategoryDetail;
 import com.ecomflutter.demo.beans.ProductImage;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -9,11 +11,11 @@ public interface ProductService {
 
     public List<Product> findAll();
 
-    public Product findById(Long id);
+    public ResponseEntity<?> findById(Long id);
 
-    public Product save(Product product, List<ProductImage> productImages);
+    public ResponseEntity<?> save(Product product, List<ProductImage> productImages, List<ProductCategoryDetail> productCategoryDetails);
 
     public int deleteById(Long id);
 
-    public Product update(Long id, Product product);
+    public ResponseEntity<?> update(Long id, Product product, List<ProductImage> productImages, List<ProductCategoryDetail> productCategoryDetails);
 }

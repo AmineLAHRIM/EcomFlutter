@@ -30,15 +30,6 @@ public class ProductImageRest {
         return this.productImageService.findById(id);
     }
 
-    /*@PostMapping("/")
-    public int save(@RequestBody ProductImage productImage) {
-        return this.productImageService.save(productImage);
-    }*/
-
-    /*@PostMapping("/productId/{productId}")
-    public int saveAll(@RequestBody List<ProductImage> productImages, @PathVariable Long productId) {
-        return this.productImageService.saveAll(productImages, productId);
-    }*/
 
     @DeleteMapping("/{id}")
     public int deleteById(@PathVariable Long id) {

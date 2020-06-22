@@ -9,10 +9,11 @@ import java.util.List;
 public interface ProductCategoryDetailService {
 
 
-
     public List<Category> findAllByProduct_Id(Long productId);
 
     public List<Product> findAllByCategory_Id(Long categoryId);
+
+    public int save(Product product, List<ProductCategoryDetail> productCategoryDetails);
 
 
     public List<ProductCategoryDetail> findAll();

@@ -42,6 +42,16 @@ public class ProductCategoryDetailServiceImpl implements ProductCategoryDetailSe
     }
 
     @Override
+    public int save(Product product, List<ProductCategoryDetail> productCategoryDetails) {
+
+        productCategoryDetails.forEach(productCategoryDetail -> {
+            productCategoryDetail.setProduct(product);
+            this.productCategoryDetailDao.save(productCategoryDetail);
+        });
+        return 1;
+    }
+
+    @Override
     public List<ProductCategoryDetail> findAll() {
         return this.productCategoryDetailDao.findAll();
     }
