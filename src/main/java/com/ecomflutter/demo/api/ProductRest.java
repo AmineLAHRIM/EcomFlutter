@@ -26,9 +26,14 @@ public class ProductRest {
         return this.productService.findById(id);
     }
 
+    @GetMapping("/store/{storeId}")
+    public ResponseEntity<?> findAllByStoreId(@PathVariable Long storeId) {
+        return this.productService.findAllByStoreId(storeId);
+    }
+
     @PostMapping("/")
     public ResponseEntity<?> save(@RequestBody Product product) {
-        return this.productService.save(product, product.getProductImages(),product.getProductCategoryDetails());
+        return this.productService.save(product);
     }
 
     @DeleteMapping("/{id}")
@@ -38,6 +43,6 @@ public class ProductRest {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
-        return this.productService.update(id, product,product.getProductImages(),product.getProductCategoryDetails());
+        return this.productService.update(id, product);
     }
 }

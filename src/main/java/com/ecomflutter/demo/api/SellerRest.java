@@ -26,6 +26,10 @@ public class SellerRest {
         return this.sellerService.findById(id);
     }
 
+    @GetMapping("/user/{userId}")
+    public Seller findByUserId(@PathVariable Long userId) {
+        return this.sellerService.findByUser_Id(userId);
+    }
 
 
     @PostMapping("/")

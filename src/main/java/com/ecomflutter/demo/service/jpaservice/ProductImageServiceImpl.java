@@ -9,6 +9,7 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         return savedProductImages;
     }
 
+    @Transactional
     @Override
     public int deleteById(Long id) {
 
@@ -63,5 +65,12 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     public List<ProductImage> findAllByProductId(Long productId) {
         return this.productImageDao.findAllByProductId(productId);
+    }
+
+    @Transactional
+    @Override
+    public int deleteAllByProductId(Long productId) {
+        return this.productImageDao.deleteAllByProduct_Id(productId);
+
     }
 }

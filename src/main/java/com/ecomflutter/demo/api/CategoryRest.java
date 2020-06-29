@@ -30,7 +30,6 @@ public class CategoryRest {
 
     @GetMapping("/bysupercategoryid/{id}")
     public List<Category> findBySuperCategoryId(@PathVariable Long id) {
-        System.out.println("findAllBySuperCategory id=" + id);
         return this.categoryService.findBySuperCategoryId(id);
     }
 

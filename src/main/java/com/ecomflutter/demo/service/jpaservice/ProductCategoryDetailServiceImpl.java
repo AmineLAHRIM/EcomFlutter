@@ -7,6 +7,7 @@ import com.ecomflutter.demo.dao.ProductCategoryDetailDao;
 import com.ecomflutter.demo.service.ProductCategoryDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,17 @@ public class ProductCategoryDetailServiceImpl implements ProductCategoryDetailSe
 
         return products;
 
+    }
+
+    @Override
+    public int deleteAllByCategory_Id(Long categoryId) {
+        return this.productCategoryDetailDao.deleteAllByCategory_Id(categoryId);
+    }
+
+    @Transactional
+    @Override
+    public int deleteAllByProduct_Id(Long productId) {
+        return this.productCategoryDetailDao.deleteAllByProduct_Id(productId);
     }
 
     @Override

@@ -13,4 +13,7 @@ public interface ProductCategoryDetailDao extends JpaRepository<ProductCategoryD
 
     List<ProductCategoryDetail> findAllByCategory_Id(Long categoryId);
 
+    int deleteAllByProduct_Id(Long productId);
+
+    int deleteAllByCategory_Id(Long categoryId);
 }

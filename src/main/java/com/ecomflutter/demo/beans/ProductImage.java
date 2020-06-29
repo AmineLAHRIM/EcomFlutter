@@ -1,10 +1,9 @@
 package com.ecomflutter.demo.beans;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.*;
 
+import javax.persistence.Entity;
 import javax.persistence.*;
 import java.io.Serializable;
 @SQLDelete(sql = "UPDATE product_image SET deleted=true WHERE id=?")
@@ -28,7 +27,8 @@ public class ProductImage implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     public Long getId() {
@@ -62,4 +62,6 @@ public class ProductImage implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+
 }

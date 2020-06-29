@@ -10,6 +10,8 @@ public interface SellerService {
 
     public Seller findById(Long id);
 
+    public Seller findByUser_Id(Long id);
+
     public int save(Seller Seller);
 
     public int deleteById(Long id);

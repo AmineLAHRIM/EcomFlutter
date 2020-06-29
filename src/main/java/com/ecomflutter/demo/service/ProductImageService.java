@@ -17,4 +17,6 @@ public interface ProductImageService {
 
     public List<ProductImage> findAllByProductId(Long productId);
 
+    public int deleteAllByProductId(Long productId);
+
 }

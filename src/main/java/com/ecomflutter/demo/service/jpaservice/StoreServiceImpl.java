@@ -1,6 +1,5 @@
 package com.ecomflutter.demo.service.jpaservice;
 
-import com.ecomflutter.demo.beans.Seller;
 import com.ecomflutter.demo.beans.Store;
 import com.ecomflutter.demo.dao.StoreDao;
 import com.ecomflutter.demo.service.StoreService;
@@ -8,6 +7,7 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -38,8 +38,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store findBySellerId(Long sellerId) {
-        return this.storeDao.findBySellerId(sellerId);
+    public List<Store> findBySellerId(Long sellerId) {
+        return this.storeDao.findAllBySeller_Id(sellerId);
     }
 
     @Override
@@ -48,6 +48,7 @@ public class StoreServiceImpl implements StoreService {
         return 1;
     }
 
+    @Transactional
     @Override
     public int deleteById(Long id) {
 

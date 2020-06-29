@@ -13,6 +13,10 @@ public interface ProductCategoryDetailService {
 
     public List<Product> findAllByCategory_Id(Long categoryId);
 
+    public int deleteAllByCategory_Id(Long categoryId);
+
+    public int deleteAllByProduct_Id(Long productId);
+
     public int save(Product product, List<ProductCategoryDetail> productCategoryDetails);
 
 

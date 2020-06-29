@@ -4,7 +4,9 @@ import com.ecomflutter.demo.beans.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ProductDao extends JpaRepository<Product,Long> {
+import java.util.List;
 
+@Repository
+public interface ProductDao extends JpaRepository<Product, Long> {
+    List<Product> findAllByStoreId(Long id);
 }

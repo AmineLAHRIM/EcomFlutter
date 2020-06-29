@@ -27,6 +27,11 @@ public class ProductCategoryDetailRest {
         return this.productCategoryDetailService.findAllByCategory_Id(categoryId);
     }
 
+    @DeleteMapping("/productId/{productId}")
+    public int deleteAllByProductId(@PathVariable Long productId) {
+        return this.productCategoryDetailService.deleteAllByProduct_Id(productId);
+    }
+
     @GetMapping("/")
     public List<ProductCategoryDetail> findAll() {
         return this.productCategoryDetailService.findAll();

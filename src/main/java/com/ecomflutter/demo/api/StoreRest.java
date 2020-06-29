@@ -26,7 +26,7 @@ public class StoreRest {
     }
 
     @GetMapping("/seller/{sellerId}")
-    public Store findBySellerId(@PathVariable Long sellerId) {
+    public List<Store> findAllBySellerId(@PathVariable Long sellerId) {
         return this.storeService.findBySellerId(sellerId);
     }
 

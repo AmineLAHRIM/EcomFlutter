@@ -1,12 +1,8 @@
 package com.ecomflutter.demo.service.jpaservice;
 
-import com.ecomflutter.demo.beans.Product;
-import com.ecomflutter.demo.beans.ProductCategoryDetail;
-import com.ecomflutter.demo.beans.ProductImage;
+import com.ecomflutter.demo.beans.*;
 import com.ecomflutter.demo.dao.ProductDao;
-import com.ecomflutter.demo.service.ProductCategoryDetailService;
-import com.ecomflutter.demo.service.ProductImageService;
-import com.ecomflutter.demo.service.ProductService;
+import com.ecomflutter.demo.service.*;
 import com.ecomflutter.demo.service.util.Helper;
 import com.ecomflutter.demo.service.util.NullPropertyNames;
 import com.ecomflutter.demo.service.util.Response;
@@ -17,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -35,12 +32,19 @@ public class ProductServiceImpl implements ProductService {
     private ProductImageService productImageService;
 
     @Autowired
+    private UpsellService upsellService;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
     private EntityManager entityManager;
 
     @Autowired
     private Helper helper;
 
     @Override
+    @Transactional
     public List<Product> findAll() {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
@@ -54,19 +58,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<?> findById(Long id) {
         Response response = new Response();
-
         Product currentProduct = null;
         Optional<Product> byId = this.productDao.findById(id);
         if (byId.isPresent()) {
             currentProduct = byId.get();
+            currentProduct.loadDetail = true;
             if (currentProduct != null) {
                 currentProduct.setCategories(this.productCategoryDetailService.findAllByProduct_Id(currentProduct.getId()));
-                this.productImageService.findAllByProductId(currentProduct.getId());
             }
             response.setOutput(currentProduct);
         } else {
             response.addError("PRODUCT NOT FOUND", -1);
         }
+
 
         if (response.hasErrors()) {
             return helper.response(HttpStatus.NOT_FOUND, response);
@@ -79,24 +83,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<?> save(Product product, List<ProductImage> productImages, List<ProductCategoryDetail> productCategoryDetails) {
+    public ResponseEntity<?> save(Product product) {
 
         Response response = new Response();
 
-        Product currentProduct = this.productDao.save(product);
-        if (currentProduct != null) {
-            if (productImages != null) {
-                this.productImageService.save(product, productImages);
-            }
-            if (productCategoryDetails != null) {
-                this.productCategoryDetailService.save(product, productCategoryDetails);
-                currentProduct.setCategories(this.productCategoryDetailService.findAllByProduct_Id(currentProduct.getId()));
-            }
-            response.setOutput(currentProduct);
-        } else {
-            response.addError("PRODUCT NOT SAVED", -1);
-        }
+        if (product != null) {
+            product.loadDetail = true;
+            List<ProductCategoryDetail> productCategoryDetails = product.getProductCategoryDetails();
 
+
+            Product currentProduct = this.productDao.save(product);
+            if (currentProduct != null) {
+                if (productCategoryDetails != null) {
+                    this.productCategoryDetailService.save(product, productCategoryDetails);
+                    currentProduct.setCategories(this.productCategoryDetailService.findAllByProduct_Id(currentProduct.getId()));
+                }
+                response.setOutput(currentProduct);
+            } else {
+                response.addError("PRODUCT NOT SAVED", -1);
+            }
+
+        }
 
         //check res
         if (response.hasErrors()) {
@@ -109,6 +116,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Transactional
     @Override
     public int deleteById(Long id) {
 
@@ -118,34 +126,80 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<?> update(Long id, Product product, List<ProductImage> productImages, List<ProductCategoryDetail> productCategoryDetails) {
+    public ResponseEntity<?> update(Long id, Product product) {
 
         Response response = new Response();
 
-        Product currentProduct = null;
-        Optional<Product> byId = this.productDao.findById(id);
-        if (byId.isPresent()) {
-            currentProduct = byId.get();
-            if (productImages != null && !productImages.isEmpty()) {
-                this.productImageService.save(currentProduct, productImages);
-            }
+        if (product != null) {
+            product.loadDetail = true;
+            List<ProductImage> productImages = product.getProductImages();
+            List<ProductCategoryDetail> productCategoryDetails = product.getProductCategoryDetails();
+            List<Upsell> upsells = product.getUpsells();
+            List<Tag> tags = product.getTags();
 
-            if (productCategoryDetails != null && !productCategoryDetails.isEmpty()) {
-                this.productCategoryDetailService.save(currentProduct, productCategoryDetails);
-                currentProduct.setCategories(this.productCategoryDetailService.findAllByProduct_Id(currentProduct.getId()));
-            }
-            BeanUtils.copyProperties(product, currentProduct, NullPropertyNames.getNullPropertyNames(product));
-            Product savedProduct = this.productDao.save(currentProduct);
+            Optional<Product> byId = this.productDao.findById(id);
+            if (byId.isPresent()) {
+                Product currentProduct = byId.get();
+                currentProduct.loadDetail = true;
 
-            if (savedProduct != null) {
-                response.setOutput(currentProduct);
+                //Product Images
+                if (productImages != null) {
+                    this.productImageService.deleteAllByProductId(currentProduct.getId());
+                    this.productImageService.save(currentProduct, productImages);
+                }
+
+                //Product Upsell
+                if (upsells != null) {
+                    this.upsellService.deleteAllByProductId(currentProduct.getId());
+                    this.upsellService.save(currentProduct, upsells);
+                }
+
+                //Product Tag
+                if (tags != null) {
+                    this.tagService.deleteAllByProductId(currentProduct.getId());
+                    this.tagService.save(currentProduct, tags);
+                }
+
+                //Product Category Detail
+                if (productCategoryDetails != null) {
+                    this.productCategoryDetailService.deleteAllByProduct_Id(currentProduct.getId());
+                    this.productCategoryDetailService.save(currentProduct, productCategoryDetails);
+                    currentProduct.setCategories(this.productCategoryDetailService.findAllByProduct_Id(currentProduct.getId()));
+                }
+
+                BeanUtils.copyProperties(product, currentProduct, NullPropertyNames.getNullPropertyNames(product));
+                Product savedProduct = this.productDao.save(currentProduct);
+                if (savedProduct != null) {
+                    response.setOutput(currentProduct);
+                } else {
+                    response.addError("PRODUCT NOT SAVED", -1);
+                }
             } else {
-                response.addError("PRODUCT NOT SAVED", -1);
+                response.addError("PRODUCT NOT FOUND", -1);
             }
-        } else {
-            response.addError("PRODUCT NOT FOUND", -1);
+
         }
 
+        //check
+        if (response.hasErrors()) {
+            return helper.response(HttpStatus.NOT_FOUND, response);
+        } else {
+            response.addInfo("SUCESS", 1);
+            response.setSucces(true);
+            return helper.response(HttpStatus.OK, response);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> findAllByStoreId(Long storeId) {
+        Response response = new Response();
+        List<Product> products = this.productDao.findAllByStoreId(storeId);
+
+        if (products != null && !products.isEmpty()) {
+            response.setOutput(products);
+        } else {
+            response.addError("PRODUCTS NOT FOUND", -1);
+        }
 
         //check
         if (response.hasErrors()) {

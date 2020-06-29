@@ -1,5 +1,6 @@
 package com.ecomflutter.demo.beans;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -53,7 +54,8 @@ public class Product implements Serializable {
     @Transient
     private List<Category> categories;
 
-
+    @Transient
+    public boolean loadDetail = false;
 
     @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -64,10 +66,17 @@ public class Product implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductWishListDetail> productWishListDetails;
 
+    @JsonManagedReference
     @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductImage> productImages;
 
+    @JsonManagedReference
+    @OneToMany(targetEntity = Upsell.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Upsell> upsells;
+
+    @JsonManagedReference
+    @OneToMany(targetEntity = Tag.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags;
 
     public Long getId() {
         return id;
@@ -187,10 +196,11 @@ public class Product implements Serializable {
     }
 
     public List<ProductImage> getProductImages() {
-        return productImages;
+        if (loadDetail) {
+            return productImages;
+        }
+        return null;
     }
-
-
 
     public List<Category> getCategories() {
         return categories;
@@ -204,10 +214,19 @@ public class Product implements Serializable {
         return productCategoryDetails;
     }
 
+    public List<Upsell> getUpsells() {
+        if (loadDetail) {
+            return upsells;
+        }
+        return null;
+    }
 
-
-
-
+    public List<Tag> getTags() {
+        if (loadDetail) {
+            return tags;
+        }
+        return null;
+    }
 
 
 }
