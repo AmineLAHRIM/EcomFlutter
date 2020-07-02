@@ -3,6 +3,7 @@ package com.ecomflutter.demo.service.jpaservice;
 import com.ecomflutter.demo.beans.Product;
 import com.ecomflutter.demo.beans.ProductImage;
 import com.ecomflutter.demo.dao.ProductImageDao;
+import com.ecomflutter.demo.service.FileObjService;
 import com.ecomflutter.demo.service.ProductImageService;
 import com.ecomflutter.demo.service.ProductService;
 import org.hibernate.Filter;
@@ -20,6 +21,9 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Autowired
     private ProductImageDao productImageDao;
+
+    @Autowired
+    private FileObjService fileObjService;
 
     @Autowired
     private ProductService productService;
@@ -49,6 +53,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         productImages.forEach(productImage -> {
             productImage.setProduct(product);
             savedProductImages.add(this.productImageDao.save(productImage));
+            //this.fileObjService.handleFileUploadPhoto(productImage.getFileObj());
         });
         return savedProductImages;
     }

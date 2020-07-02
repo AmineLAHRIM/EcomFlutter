@@ -23,7 +23,8 @@ public class ProductImage implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String imageUrl;
+    @OneToOne
+    private FileObj fileObj;
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
@@ -39,12 +40,12 @@ public class ProductImage implements Serializable {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public FileObj getFileObj() {
+        return fileObj;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setFileObj(FileObj fileObj) {
+        this.fileObj = fileObj;
     }
 
     public Product getProduct() {

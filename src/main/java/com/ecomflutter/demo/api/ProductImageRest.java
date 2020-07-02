@@ -35,4 +35,6 @@ public class ProductImageRest {
     public int deleteById(@PathVariable Long id) {
         return this.productImageService.deleteById(id);
     }
+
+
 }
