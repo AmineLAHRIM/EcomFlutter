@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
                 //Product Images
                 if (productImages != null) {
                     this.productImageService.deleteAllByProductId(currentProduct.getId());
-                    this.productImageService.save(currentProduct, productImages);
+                    this.productImageService.saveAll(currentProduct, productImages);
                 }
 
                 //Product Upsell

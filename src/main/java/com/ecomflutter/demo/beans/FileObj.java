@@ -31,6 +31,9 @@ public class FileObj implements Serializable {
         this.date = date;
     }
 
+    public FileObj() {
+    }
+
     public Long getId() {
         return id;
     }

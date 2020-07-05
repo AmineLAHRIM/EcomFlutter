@@ -25,6 +25,12 @@ public class ProductImageRest {
         return this.productImageService.findAllByProductId(productId);
     }
 
+    @PostMapping("/")
+    public ProductImage save(@RequestBody ProductImage productImage) {
+        return this.productImageService.save(productImage);
+    }
+
+
     @GetMapping("/{id}")
     public ProductImage findById(@PathVariable Long id) {
         return this.productImageService.findById(id);

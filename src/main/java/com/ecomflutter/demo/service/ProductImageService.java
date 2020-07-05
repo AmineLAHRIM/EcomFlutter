@@ -11,7 +11,9 @@ public interface ProductImageService {
 
     public ProductImage findById(Long id);
 
-    public List<ProductImage> save(Product product, List<ProductImage> productImages);
+    public List<ProductImage> saveAll(Product product, List<ProductImage> productImages);
+
+    public ProductImage save(ProductImage productImage);
 
     public int deleteById(Long id);
 

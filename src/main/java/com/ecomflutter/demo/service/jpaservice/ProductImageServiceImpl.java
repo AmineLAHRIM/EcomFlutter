@@ -48,14 +48,18 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
-    public List<ProductImage> save(Product product, List<ProductImage> productImages) {
+    public List<ProductImage> saveAll(Product product, List<ProductImage> productImages) {
         List<ProductImage> savedProductImages = new ArrayList<>();
         productImages.forEach(productImage -> {
             productImage.setProduct(product);
             savedProductImages.add(this.productImageDao.save(productImage));
-            //this.fileObjService.handleFileUploadPhoto(productImage.getFileObj());
         });
         return savedProductImages;
+    }
+
+    @Override
+    public ProductImage save(ProductImage productImage) {
+        return this.productImageDao.save(productImage);
     }
 
     @Transactional
