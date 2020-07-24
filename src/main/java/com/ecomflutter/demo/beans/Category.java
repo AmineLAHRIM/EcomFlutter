@@ -1,11 +1,12 @@
 package com.ecomflutter.demo.beans;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -31,9 +32,16 @@ public class Category implements Serializable {
     private String name;
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
+    private boolean parent;
 
     @ManyToOne
-    private SuperCategory superCategory;
+    @JsonBackReference
+    private Category parentCategory;
+
+    @JsonManagedReference
+    @Where(clause = "deleted = 'false'")
+    @OneToMany(targetEntity = Category.class, mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> subCategories;
 
     @Transient
     private List<Product> products;
@@ -58,13 +66,7 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public SuperCategory getSuperCategory() {
-        return superCategory;
-    }
 
-    public void setSuperCategory(SuperCategory superCategory) {
-        this.superCategory = superCategory;
-    }
 
     public boolean isDeleted() {
         return deleted;
@@ -73,14 +75,6 @@ public class Category implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
-
-    /*public List<ProductCategoryDetail> getProductCategoryDetails() {
-        return productCategoryDetails;
-    }
-
-    public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
-        this.productCategoryDetails = productCategoryDetails;
-    }*/
 
     public List<Product> getProducts() {
         return products;
@@ -96,5 +90,29 @@ public class Category implements Serializable {
 
     public void setProductCategoryDetails(List<ProductCategoryDetail> productCategoryDetails) {
         this.productCategoryDetails = productCategoryDetails;
+    }
+
+    public Category getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
+    }
+
+    public List<Category> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(List<Category> subCategories) {
+        this.subCategories = subCategories;
+    }
+
+    public boolean isParent() {
+        return parent;
+    }
+
+    public void setParent(boolean parent) {
+        this.parent = parent;
     }
 }

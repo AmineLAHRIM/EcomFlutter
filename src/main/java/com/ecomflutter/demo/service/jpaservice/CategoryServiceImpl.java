@@ -42,10 +42,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categories;
     }
 
-    @Override
-    public List<Category> findBySuperCategoryId(Long id) {
-        return this.categoryDao.findBySuperCategoryId(id);
-    }
 
     /*@Override
     public List<Category> findAllBySuperCategory(Long id) {
@@ -81,6 +77,26 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryDao.deleteById(id);
         return 1;
 
+    }
+
+    @Override
+    public List<Category> findAllByParentCategoryId(Long id) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedFilter");
+        filter.setParameter("isDeleted", false);
+        List<Category> categories = this.categoryDao.findAllByParentCategoryId(id);
+        session.disableFilter("deletedFilter");
+        return categories;
+    }
+
+    @Override
+    public List<Category> findAllParentCategories() {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedFilter");
+        filter.setParameter("isDeleted", false);
+        List<Category> categories = this.categoryDao.findAllByParentIsTrue();
+        session.disableFilter("deletedFilter");
+        return categories;
     }
 
 }

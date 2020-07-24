@@ -2,12 +2,11 @@ package com.ecomflutter.demo.beans;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,6 +30,7 @@ public class Product implements Serializable {
 
     private String title;
     private String shortDescription;
+    @Column(columnDefinition="TEXT")
     private String longDescription;
     private double price;
     private double pricePromo;
@@ -38,7 +38,8 @@ public class Product implements Serializable {
     private int quantityStock;
     @Enumerated(EnumType.STRING)
     private Unit unit;
-    private String featuredImageUrl;
+    @OneToOne
+    private ProductImage featuredImage;
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
@@ -67,6 +68,7 @@ public class Product implements Serializable {
     private List<ProductWishListDetail> productWishListDetails;
 
     @JsonManagedReference
+    @Where(clause = "deleted = 'false'")
     @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> productImages;
 
@@ -150,12 +152,12 @@ public class Product implements Serializable {
         this.unit = unit;
     }
 
-    public String getFeaturedImageUrl() {
-        return featuredImageUrl;
+    public ProductImage getFeaturedImage() {
+        return featuredImage;
     }
 
-    public void setFeaturedImageUrl(String featuredImageUrl) {
-        this.featuredImageUrl = featuredImageUrl;
+    public void setFeaturedImage(ProductImage featuredImage) {
+        this.featuredImage = featuredImage;
     }
 
     public Rank getRank() {

@@ -1,5 +1,6 @@
 package com.ecomflutter.demo.service;
 
+import com.ecomflutter.demo.beans.MaxMinPrice;
 import com.ecomflutter.demo.beans.Product;
 import org.springframework.http.ResponseEntity;
 
@@ -17,4 +18,7 @@ public interface ProductService {
 
     public ResponseEntity<?> update(Long id, Product product);
     ResponseEntity<?> findAllByStoreId(Long storeId);
+
+    MaxMinPrice findMaxMinPrice();
+
 }

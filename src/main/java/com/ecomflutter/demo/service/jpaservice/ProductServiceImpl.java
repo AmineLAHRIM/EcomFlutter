@@ -210,4 +210,11 @@ public class ProductServiceImpl implements ProductService {
             return helper.response(HttpStatus.OK, response);
         }
     }
+
+    @Override
+    public MaxMinPrice findMaxMinPrice() {
+        return this.productDao.findMaxMinPrice();
+    }
+
+
 }

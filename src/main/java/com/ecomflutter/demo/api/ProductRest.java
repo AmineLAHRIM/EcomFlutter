@@ -1,5 +1,6 @@
 package com.ecomflutter.demo.api;
 
+import com.ecomflutter.demo.beans.MaxMinPrice;
 import com.ecomflutter.demo.beans.Product;
 import com.ecomflutter.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,10 @@ public class ProductRest {
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
         return this.productService.update(id, product);
     }
+
+    @GetMapping("/maxminprice")
+    public MaxMinPrice findMaxMinPrice() {
+        return this.productService.findMaxMinPrice();
+    }
+
 }

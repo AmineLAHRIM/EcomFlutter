@@ -20,6 +20,11 @@ public class CategoryRest {
         return this.categoryService.findAll();
     }
 
+    @GetMapping("/parent")
+    public List<Category> findAllParentCategories() {
+        return this.categoryService.findAllParentCategories();
+    }
+
     /*@GetMapping("/bysupercategory/{id}")
     public List<Category> findAllBySuperCategory(@PathVariable Long id) {
         System.out.println("findAllBySuperCategory id="+id);
@@ -28,9 +33,9 @@ public class CategoryRest {
 
 
 
-    @GetMapping("/bysupercategoryid/{id}")
-    public List<Category> findBySuperCategoryId(@PathVariable Long id) {
-        return this.categoryService.findBySuperCategoryId(id);
+    @GetMapping("/byparentcategoryid/{id}")
+    public List<Category> findAllByParentCategoryId(@PathVariable Long id) {
+        return this.categoryService.findAllByParentCategoryId(id);
     }
 
     @GetMapping("/{id}")

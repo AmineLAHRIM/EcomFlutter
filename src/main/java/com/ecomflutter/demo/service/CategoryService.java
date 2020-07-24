@@ -8,7 +8,6 @@ public interface CategoryService {
 
     public List<Category> findAll();
 
-    public List<Category> findBySuperCategoryId(Long id);
     /* public List<Category> findAllBySuperCategory(Long id);*/
 
 
@@ -19,4 +18,7 @@ public interface CategoryService {
     public int deleteById(Long id);
 
 
+    List<Category> findAllByParentCategoryId(Long id);
+
+    List<Category> findAllParentCategories();
 }

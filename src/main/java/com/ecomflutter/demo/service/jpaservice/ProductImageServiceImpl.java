@@ -73,7 +73,12 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     public List<ProductImage> findAllByProductId(Long productId) {
-        return this.productImageDao.findAllByProductId(productId);
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedFilter");
+        filter.setParameter("isDeleted", false);
+        List<ProductImage> ProductImages = this.productImageDao.findAllByProductId(productId);
+        session.disableFilter("deletedFilter");
+        return ProductImages;
     }
 
     @Transactional
