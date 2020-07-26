@@ -6,14 +6,17 @@ import com.ecomflutter.demo.dao.ProductDao;
 import com.ecomflutter.demo.dao.SuperCategoryDao;
 import com.ecomflutter.demo.service.CategoryService;
 import com.ecomflutter.demo.service.ProductCategoryDetailService;
+import com.ecomflutter.demo.service.util.NullPropertyNames;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -36,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Category> categories = this.categoryDao.findAll();
+        List<Category> categories = this.categoryDao.findAllByOrderByIdDesc();
         session.disableFilter("deletedFilter");
 
         return categories;
@@ -65,9 +68,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public int save(Category category) {
-        this.categoryDao.save(category);
-        return 1;
+    public Category save(Category category) {
+        return this.categoryDao.save(category);
     }
 
     @Transactional
@@ -97,6 +99,25 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = this.categoryDao.findAllByParentIsTrue();
         session.disableFilter("deletedFilter");
         return categories;
+    }
+
+    @Override
+    public Category update(Long id, Category category) {
+
+        Optional<Category> byId = this.categoryDao.findById(id);
+        Category currentCategory = null;
+
+        if (byId.isPresent()) {
+            currentCategory = byId.get();
+            BeanUtils.copyProperties(category, currentCategory, NullPropertyNames.getNullPropertyNames(category));
+            if(currentCategory.isParent()){
+                currentCategory.setParentCategory(null);
+            }
+            currentCategory = this.categoryDao.save(currentCategory);
+        }
+
+        return currentCategory;
+
     }
 
 }

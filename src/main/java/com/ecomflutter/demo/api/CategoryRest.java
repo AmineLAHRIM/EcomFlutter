@@ -44,8 +44,13 @@ public class CategoryRest {
     }
 
     @PostMapping("/")
-    public int save(@RequestBody Category category) {
+    public Category save(@RequestBody Category category) {
         return this.categoryService.save(category);
+    }
+
+    @PutMapping("/{id}")
+    public Category update(@PathVariable Long id, @RequestBody Category category) {
+        return this.categoryService.update(id, category);
     }
 
     @DeleteMapping("/{id}")

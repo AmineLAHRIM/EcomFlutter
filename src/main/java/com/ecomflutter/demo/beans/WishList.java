@@ -27,7 +27,7 @@ public class WishList implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "wishList", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "wishList", cascade = CascadeType.REMOVE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductWishListDetail> productWishListDetailList;
 

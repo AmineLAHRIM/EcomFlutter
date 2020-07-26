@@ -57,10 +57,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<?> findById(Long id) {
+
+
+
         Response response = new Response();
         Product currentProduct = null;
+
+
         Optional<Product> byId = this.productDao.findById(id);
-        if (byId.isPresent()) {
+
+        if (byId.isPresent() && !byId.get().isDeleted()) {
             currentProduct = byId.get();
             currentProduct.loadDetail = true;
             if (currentProduct != null) {

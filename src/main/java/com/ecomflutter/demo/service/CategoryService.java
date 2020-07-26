@@ -13,7 +13,7 @@ public interface CategoryService {
 
     public Category findById(Long id);
 
-    public int save(Category category);
+    public Category save(Category category);
 
     public int deleteById(Long id);
 
@@ -21,4 +21,6 @@ public interface CategoryService {
     List<Category> findAllByParentCategoryId(Long id);
 
     List<Category> findAllParentCategories();
+
+    Category update(Long id, Category category);
 }

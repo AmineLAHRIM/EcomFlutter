@@ -1,9 +1,13 @@
 package com.ecomflutter.demo.beans;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
+@SQLDelete(sql = "UPDATE tag SET deleted=true WHERE id=?")
+
 
 @Entity
 public class Tag implements Serializable {
@@ -13,6 +17,9 @@ public class Tag implements Serializable {
     private Long id;
 
     private String name;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
     @JsonBackReference
     @ManyToOne

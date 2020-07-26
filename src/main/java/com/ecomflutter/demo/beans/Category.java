@@ -40,13 +40,13 @@ public class Category implements Serializable {
 
     @JsonManagedReference
     @Where(clause = "deleted = 'false'")
-    @OneToMany(targetEntity = Category.class, mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Category.class, mappedBy = "parentCategory", cascade = CascadeType.DETACH)
     private List<Category> subCategories;
 
     @Transient
     private List<Product> products;
 
-    @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "category", cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductCategoryDetail> productCategoryDetails;
 

@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface CategoryDao extends JpaRepository<Category, Long> {
     /*List<Category> findAllBySuperCategory(SuperCategory superCategory);*/
+
+    List<Category> findAllByOrderByIdDesc();
     List<Category> findAllByParentCategoryId(Long id);
     List<Category> findAllByParentIsTrue();
     //List<Category> findBySuperCategoryId(Long id);

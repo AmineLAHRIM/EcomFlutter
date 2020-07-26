@@ -58,26 +58,26 @@ public class Product implements Serializable {
     @Transient
     public boolean loadDetail = false;
 
-    @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductCategoryDetail.class, mappedBy = "product", cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductCategoryDetail> productCategoryDetails;
 
 
-    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductWishListDetail.class, mappedBy = "product", cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductWishListDetail> productWishListDetails;
 
     @JsonManagedReference
     @Where(clause = "deleted = 'false'")
-    @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = ProductImage.class, mappedBy = "product", cascade = CascadeType.DETACH)
     private List<ProductImage> productImages;
 
     @JsonManagedReference
-    @OneToMany(targetEntity = Upsell.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Upsell.class, mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Upsell> upsells;
 
     @JsonManagedReference
-    @OneToMany(targetEntity = Tag.class, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Tag.class, mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Tag> tags;
 
     public Long getId() {
