@@ -13,6 +13,8 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
     List<Category> findAllByOrderByIdDesc();
     List<Category> findAllByParentCategoryId(Long id);
     List<Category> findAllByParentIsTrue();
+
+
     //List<Category> findBySuperCategoryId(Long id);
 
 }

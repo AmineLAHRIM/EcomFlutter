@@ -1,12 +1,11 @@
 package com.ecomflutter.demo.beans;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -35,13 +34,8 @@ public class Category implements Serializable {
     private boolean parent;
 
     @ManyToOne
-    @JsonBackReference
     private Category parentCategory;
 
-    @JsonManagedReference
-    @Where(clause = "deleted = 'false'")
-    @OneToMany(targetEntity = Category.class, mappedBy = "parentCategory", cascade = CascadeType.DETACH)
-    private List<Category> subCategories;
 
     @Transient
     private List<Product> products;
@@ -100,13 +94,6 @@ public class Category implements Serializable {
         this.parentCategory = parentCategory;
     }
 
-    public List<Category> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(List<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
 
     public boolean isParent() {
         return parent;

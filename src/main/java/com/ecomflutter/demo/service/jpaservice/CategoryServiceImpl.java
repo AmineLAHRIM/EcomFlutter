@@ -6,10 +6,8 @@ import com.ecomflutter.demo.dao.ProductDao;
 import com.ecomflutter.demo.dao.SuperCategoryDao;
 import com.ecomflutter.demo.service.CategoryService;
 import com.ecomflutter.demo.service.ProductCategoryDetailService;
-import com.ecomflutter.demo.service.util.NullPropertyNames;
 import org.hibernate.Filter;
 import org.hibernate.Session;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,11 +107,18 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (byId.isPresent()) {
             currentCategory = byId.get();
-            BeanUtils.copyProperties(category, currentCategory, NullPropertyNames.getNullPropertyNames(category));
+            //BeanUtils.copyProperties(category, currentCategory, NullPropertyNames.getNullPropertyNames(category));
+            currentCategory.setName(category.getName());
+            currentCategory.setParent(category.isParent());
+            currentCategory.setParentCategory(category.getParentCategory());
+
             if(currentCategory.isParent()){
                 currentCategory.setParentCategory(null);
             }
+
             currentCategory = this.categoryDao.save(currentCategory);
+
+
         }
 
         return currentCategory;
