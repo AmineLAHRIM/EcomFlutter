@@ -1,5 +1,6 @@
 package com.ecomflutter.demo.beans;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @SQLDelete(sql = "UPDATE store SET deleted=true WHERE id=?")
 
@@ -34,6 +36,13 @@ public class Store implements Serializable {
 
     @ManyToOne
     private Seller seller;
+
+    @OneToMany(targetEntity = Product.class, mappedBy = "store", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Product> products;
+
+    @Transient
+    private int productsCount;
 
     public Long getId() {
         return id;
@@ -89,5 +98,22 @@ public class Store implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public int getProductsCount() {
+        productsCount = getProducts().size();
+        return productsCount;
+    }
+
+    public void setProductsCount(int productsCount) {
+        this.productsCount = productsCount;
     }
 }
