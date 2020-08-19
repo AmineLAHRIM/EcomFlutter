@@ -1,11 +1,10 @@
 package com.ecomflutter.demo.beans;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -39,10 +38,11 @@ public class Store implements Serializable {
 
     @OneToMany(targetEntity = Product.class, mappedBy = "store", cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Where(clause = "deleted = 'false'")
     private List<Product> products;
 
     @Transient
-    private int productsCount;
+    private int productsCount=0;
 
     public Long getId() {
         return id;
@@ -109,7 +109,10 @@ public class Store implements Serializable {
     }
 
     public int getProductsCount() {
-        productsCount = getProducts().size();
+        List<Product> products=getProducts();
+        if(products!=null){
+            productsCount = getProducts().size();
+        }
         return productsCount;
     }
 

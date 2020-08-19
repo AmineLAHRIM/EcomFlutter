@@ -49,10 +49,10 @@ public class ProductServiceImpl implements ProductService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Product> Products = this.productDao.findAll();
+        List<Product> products = this.productDao.findAll();
         session.disableFilter("deletedFilter");
 
-        return Products;
+        return products;
     }
 
     @Override
@@ -199,7 +199,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<?> findAllByStoreId(Long storeId) {
         Response response = new Response();
+
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedFilter");
+        filter.setParameter("isDeleted", false);
         List<Product> products = this.productDao.findAllByStoreId(storeId);
+        session.disableFilter("deletedFilter");
 
         if (products != null && !products.isEmpty()) {
             response.setOutput(products);
@@ -220,6 +225,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public MaxMinPrice findMaxMinPrice() {
         return this.productDao.findMaxMinPrice();
+    }
+
+    @Override
+    public MaxMinPrice findMaxMinPriceByStoreId(Long storeId) {
+        return this.productDao.findMaxMinPriceByStoreId(storeId);
     }
 
 

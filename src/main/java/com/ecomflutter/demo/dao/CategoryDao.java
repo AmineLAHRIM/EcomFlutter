@@ -15,6 +15,7 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
     List<Category> findAllByParentIsTrue();
 
 
+
     //List<Category> findBySuperCategoryId(Long id);
 
 }

@@ -31,8 +31,13 @@ public class StoreRest {
     }
 
     @PostMapping("/")
-    public int save(@RequestBody Store store) {
+    public Store save(@RequestBody Store store) {
         return this.storeService.save(store);
+    }
+
+    @PutMapping("/{id}")
+    public Store update(@PathVariable Long id, @RequestBody Store store) {
+        return this.storeService.update(id, store);
     }
 
     @DeleteMapping("/{id}")

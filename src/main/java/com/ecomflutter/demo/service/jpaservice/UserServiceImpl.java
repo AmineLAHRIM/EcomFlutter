@@ -6,9 +6,11 @@ import com.ecomflutter.demo.dao.UserDao;
 import com.ecomflutter.demo.service.UserService;
 import com.ecomflutter.demo.service.WishListService;
 import com.ecomflutter.demo.service.util.Helper;
+import com.ecomflutter.demo.service.util.NullPropertyNames;
 import com.ecomflutter.demo.service.util.Response;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -46,7 +49,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        return this.userDao.findById(id).get();
+        Optional<User> getId = this.userDao.findById(id);
+        if (getId.isPresent()) {
+            return getId.get();
+        }
+        return null;
     }
 
     @Override
@@ -94,8 +101,8 @@ public class UserServiceImpl implements UserService {
         } else {
             WishList currentW = this.wishListService.save(new WishList());
             user.setWishList(currentW);
-            this.userDao.save(user);
-            response.setOutput(user);
+            User savedUser = this.userDao.save(user);
+            response.setOutput(savedUser);
             response.addInfo("SUCESS", 1);
             return helper.response(HttpStatus.OK, response);
         }
@@ -108,6 +115,31 @@ public class UserServiceImpl implements UserService {
 
         this.userDao.deleteById(id);
         return 1;
+
+    }
+
+    @Override
+    public ResponseEntity<?> update(Long id, User user) {
+
+        Response response = new Response();
+
+        User currentUser = findById(id);
+        if (currentUser == null) {
+            response.addError("USER NOT EXISTS", -1);
+        }
+
+
+        // VERIFY ERRORS
+        if (response.hasErrors()) {
+            return helper.response(HttpStatus.NOT_FOUND, response);
+        } else {
+            BeanUtils.copyProperties(user, currentUser, NullPropertyNames.getNullPropertyNames(user));
+            User savedUser = this.userDao.save(currentUser);
+
+            response.setOutput(savedUser);
+            response.addInfo("SUCESS", 1);
+            return helper.response(HttpStatus.OK, response);
+        }
 
     }
 }

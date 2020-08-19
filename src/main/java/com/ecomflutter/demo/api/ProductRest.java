@@ -52,4 +52,9 @@ public class ProductRest {
         return this.productService.findMaxMinPrice();
     }
 
+    @GetMapping("/maxminprice/store/{storeId}")
+    public MaxMinPrice findMaxMinPriceByStoreId(@PathVariable Long storeId) {
+        return this.productService.findMaxMinPriceByStoreId(storeId);
+    }
+
 }

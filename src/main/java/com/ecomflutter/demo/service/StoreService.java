@@ -12,7 +12,9 @@ public interface StoreService {
 
     public List<Store> findBySellerId(Long sellerId);
 
-    public int save(Store store);
+    public Store save(Store store);
 
     public int deleteById(Long id);
+
+    Store update(Long id, Store store);
 }

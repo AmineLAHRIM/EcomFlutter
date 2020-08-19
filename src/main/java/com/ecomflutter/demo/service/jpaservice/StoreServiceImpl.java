@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -26,10 +27,10 @@ public class StoreServiceImpl implements StoreService {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", false);
-        List<Store> Stores = this.storeDao.findAll();
+        List<Store> stores = this.storeDao.findAll();
         session.disableFilter("deletedFilter");
 
-        return Stores;
+        return stores;
     }
 
     @Override
@@ -39,13 +40,19 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<Store> findBySellerId(Long sellerId) {
-        return this.storeDao.findAllBySeller_Id(sellerId);
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedFilter");
+        filter.setParameter("isDeleted", false);
+        List<Store> stores = this.storeDao.findAllBySeller_Id(sellerId);
+        session.disableFilter("deletedFilter");
+        return stores;
     }
 
     @Override
-    public int save(Store Store) {
-        this.storeDao.save(Store);
-        return 1;
+    public Store save(Store store) {
+        Store s = this.storeDao.save(store);
+        System.out.println("id hada " + s.getId());
+        return s;
     }
 
     @Transactional
@@ -55,5 +62,20 @@ public class StoreServiceImpl implements StoreService {
         this.storeDao.deleteById(id);
         return 1;
 
+    }
+
+    @Override
+    public Store update(Long id, Store store) {
+        Optional<Store> byId = this.storeDao.findById(id);
+
+        if (byId.isPresent()) {
+            Store currentStore = byId.get();
+            store.setId(id);
+            //BeanUtils.copyProperties(store, currentStore);
+            Store savedStore = this.storeDao.save(store);
+
+            return savedStore;
+        }
+        return null;
     }
 }

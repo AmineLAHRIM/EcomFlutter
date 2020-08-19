@@ -44,6 +44,11 @@ public class UserRest {
         return this.userService.save(user);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User user) {
+        return this.userService.update(id, user);
+    }
+
     @DeleteMapping("/{id}")
     public int deleteById(@PathVariable Long id) {
         return this.userService.deleteById(id);

@@ -19,4 +19,6 @@ public interface UserService {
     public ResponseEntity<?> save(User User);
 
     public int deleteById(Long id);
+
+    ResponseEntity<?> update(Long id, User user);
 }

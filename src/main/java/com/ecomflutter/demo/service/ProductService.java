@@ -21,4 +21,5 @@ public interface ProductService {
 
     MaxMinPrice findMaxMinPrice();
 
+    MaxMinPrice findMaxMinPriceByStoreId(Long storeId);
 }
