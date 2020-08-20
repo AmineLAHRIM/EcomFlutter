@@ -6,11 +6,9 @@ import com.ecomflutter.demo.dao.UserDao;
 import com.ecomflutter.demo.service.UserService;
 import com.ecomflutter.demo.service.WishListService;
 import com.ecomflutter.demo.service.util.Helper;
-import com.ecomflutter.demo.service.util.NullPropertyNames;
 import com.ecomflutter.demo.service.util.Response;
 import org.hibernate.Filter;
 import org.hibernate.Session;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -133,8 +131,9 @@ public class UserServiceImpl implements UserService {
         if (response.hasErrors()) {
             return helper.response(HttpStatus.NOT_FOUND, response);
         } else {
-            BeanUtils.copyProperties(user, currentUser, NullPropertyNames.getNullPropertyNames(user));
-            User savedUser = this.userDao.save(currentUser);
+            //BeanUtils.copyProperties(user, currentUser, NullPropertyNames.getNullPropertyNames(user));
+            user.setId(currentUser.getId());
+            User savedUser = this.userDao.save(user);
 
             response.setOutput(savedUser);
             response.addInfo("SUCESS", 1);
