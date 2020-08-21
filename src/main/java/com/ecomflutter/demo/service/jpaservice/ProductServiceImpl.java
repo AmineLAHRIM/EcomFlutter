@@ -2,6 +2,7 @@ package com.ecomflutter.demo.service.jpaservice;
 
 import com.ecomflutter.demo.beans.*;
 import com.ecomflutter.demo.dao.ProductDao;
+import com.ecomflutter.demo.dao.RankDao;
 import com.ecomflutter.demo.service.*;
 import com.ecomflutter.demo.service.util.Helper;
 import com.ecomflutter.demo.service.util.NullPropertyNames;
@@ -38,6 +39,9 @@ public class ProductServiceImpl implements ProductService {
     private TagService tagService;
 
     @Autowired
+    private RankDao rankDao;
+
+    @Autowired
     private EntityManager entityManager;
 
     @Autowired
@@ -57,7 +61,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<?> findById(Long id) {
-
 
 
         Response response = new Response();
@@ -97,8 +100,40 @@ public class ProductServiceImpl implements ProductService {
             product.loadDetail = true;
             List<ProductCategoryDetail> productCategoryDetails = product.getProductCategoryDetails();
 
+            //setup Rank
+            Rank rank = new Rank();
+            rank.setNumberStar1(1);
+            rank.setNumberStar2(2);
+            rank.setNumberStar3(3);
+            rank.setNumberStar4(4);
+            rank.setNumberStar5(30);
+            Rank savedRank = this.rankDao.save(rank);
+            product.setRank(savedRank);
 
-            Product currentProduct = this.productDao.save(product);
+            Product currentProduct;
+
+            //setup ProductImage just featured image
+            if (product.getFeaturedImage() != null) {
+                //save imageUrl until we save the product with no featuredImage
+                String imageUrl = product.getFeaturedImage().getImageUrl();
+                product.setFeaturedImage(null);
+
+                currentProduct = this.productDao.save(product);
+
+                List<ProductImage> savedProductImages = this.productImageService.saveAll(currentProduct, currentProduct.getProductImages());
+                if (savedProductImages != null && savedProductImages.size() > 0) {
+                    for (ProductImage productImage : savedProductImages) {
+                        if (imageUrl.equals(productImage.getImageUrl())) {
+                            currentProduct.setFeaturedImage(productImage);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                currentProduct = this.productDao.save(product);
+            }
+
+
             if (currentProduct != null) {
                 if (productCategoryDetails != null) {
                     this.productCategoryDetailService.save(product, productCategoryDetails);
@@ -151,7 +186,23 @@ public class ProductServiceImpl implements ProductService {
                 //Product Images
                 if (productImages != null) {
                     this.productImageService.deleteAllByProductId(currentProduct.getId());
-                    this.productImageService.saveAll(currentProduct, productImages);
+
+
+                    //get featured image after saved with id
+                    List<ProductImage> savedProductImages = this.productImageService.saveAll(currentProduct, productImages);
+                    if (product.getFeaturedImage() != null) {
+                        String imageUrl = product.getFeaturedImage().getImageUrl();
+                        if (!imageUrl.equals("") && savedProductImages != null && savedProductImages.size() > 0) {
+                            for (ProductImage productImage : savedProductImages) {
+                                if (imageUrl.equals(productImage.getImageUrl())) {
+                                    product.setFeaturedImage(productImage);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+
                 }
 
                 //Product Upsell
@@ -174,9 +225,14 @@ public class ProductServiceImpl implements ProductService {
                 }
 
                 BeanUtils.copyProperties(product, currentProduct, NullPropertyNames.getNullPropertyNames(product));
+                //after copie check if url is empty for featuredImage
+                if(product.getFeaturedImage()!=null && product.getFeaturedImage().getImageUrl().equals("")){
+                    currentProduct.setFeaturedImage(null);
+                }
+
                 Product savedProduct = this.productDao.save(currentProduct);
                 if (savedProduct != null) {
-                    response.setOutput(currentProduct);
+                    response.setOutput(savedProduct);
                 } else {
                     response.addError("PRODUCT NOT SAVED", -1);
                 }
