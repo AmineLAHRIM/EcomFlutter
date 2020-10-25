@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface StoreDao extends JpaRepository<Store, Long> {
     List<Store> findAllBySeller_Id(Long sellerId);
-
 }
