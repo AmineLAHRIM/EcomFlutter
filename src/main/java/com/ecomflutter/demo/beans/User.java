@@ -143,4 +143,6 @@ public class User implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
+
 }

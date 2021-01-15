@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+/*// autrise one client url
+@CrossOrigin(origins = "http://localhost:4200")
+// autorise multi client urls
+@CrossOrigin(origins = {"http://localhost:4200","http://localhost:8000"})*/
+// autorise all client urls
 @CrossOrigin(origins = "*")
 @RequestMapping("ecomflutter/product")
 public class ProductRest {

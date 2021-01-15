@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+// autrise all client urls
 @CrossOrigin(origins = "*")
 @RequestMapping("ecomflutter/category")
 public class CategoryRest {
